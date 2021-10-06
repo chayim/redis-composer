@@ -1,0 +1,12 @@
+
+---
+
+version: "3.9"
+services:
+{% for i in dockers %}
+  {{environment}}{{loop.index}}:
+    container_name: {{i.name}}
+    image: {{i.image}}
+    ports:
+      - "{{i.port}}:6379"
+{% endfor %}

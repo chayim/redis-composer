@@ -1,0 +1,11 @@
+---
+
+environments:
+  redis-standalone:
+    images:
+      - redis/redis: 5
+      - redislabs/rejson: 2
+
+  redis-sentinel:
+    images:
+      - redis/redis: 3
