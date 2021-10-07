@@ -36,7 +36,7 @@ def generate(yamlstruct, destdir, envname, ports):
     num_ports = sum([list(val.values())[0] for val in conf['images']])
     our_ports = [random.randint(ports[0], ports[-1]) for i in range(0, num_ports+1)]
 
-    context = {'ports': ports, 
+    context = {'ports': ports,
                'conf': conf,
                'environment': envname,
                'dockers': [],
@@ -54,8 +54,8 @@ def generate(yamlstruct, destdir, envname, ports):
         num_images = list(img.values())[0]
         for n in range(0, num_images+1):
             port = our_ports[c + n]
-            name = "{}_{}_{}".format(envname.replace('-', '_'), 
-                                     image.split('/')[1], 
+            name = "{}_{}_{}".format(envname.replace('-', '_'),
+                                     image.split('/')[1],
                                      n)
             d = {'image': image, 'name': name, 'port': port}
             # prepare the context for the docker-compose template
@@ -84,16 +84,16 @@ if __name__ == "__main__":
     p.add_option("-d", "--dest", metavar="DIR", dest="DESTDIR",
                  default=os.getcwd(),
                  help="Directory in which to generate files")
-    p.add_option("-e", "--environment", metavar=str, dest="ENV",
+    p.add_option("-e", "--environment", metavar="string", dest="ENV",
                  help="Environment to generate")
     p.add_option("-l", "--listenvs", action="store_true", default=False,
                  dest="LISTENVS",
                  help="If set, list the available environments and exit.")
 
-    p.add_option("-P", "--port_start", type=int, default=5000,
+    p.add_option("-P", "--port_start", metavar="int", type=int, default=5000,
                  dest="PORT_START",
                  help="Start finding free ports above this number.")
-    p.add_option("-E", "--port_end", type=int, default=6000,
+    p.add_option("-E", "--port_end", metavar="int", type=int, default=6000,
                  dest="PORT_END",
                  help="Stop finding free ports below this number."),
 
