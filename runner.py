@@ -28,7 +28,10 @@ def parse(srcfile):
     # TODO validate with yamale
     return cfg
 
-def generate(yamlstruct, destdir, envname, ports):
+def generate(yamlstruct, destdir, envname, ports, suffix=""):
+    if suffix is None:
+        suffix = ""
+
     if not os.path.exists(destdir):
         os.makedirs(destdir)
 
@@ -65,12 +68,12 @@ def generate(yamlstruct, destdir, envname, ports):
             portmap.append("{}={}".format(name, port))
         c += 1
 
-    destplate = os.path.join(destdir, "docker-compose.yml")
+    destplate = os.path.join(destdir, "docker-compose.yml{}".format(suffix))
     with open(destplate, "w+") as f:
         f.write(tmpl.render(context))
     sys.stdout.write("Docker template written to {}.\n".format(destplate))
 
-    envfile = os.path.join(destdir, "env")
+    envfile = os.path.join(destdir, "env{}".format(suffix))
     with open(envfile, "w+") as fp:
         for p in portmap:
             fp.write("{}\n".format(p))
@@ -96,6 +99,8 @@ if __name__ == "__main__":
     p.add_option("-E", "--port_end", metavar="int", type=int, default=6000,
                  dest="PORT_END",
                  help="Stop finding free ports below this number."),
+    p.add_option("-S", "--suffix", metavar="string", dest="SUFFIX", default="",
+                 help="Suffix for the compose and env files.")
 
     opts, args = p.parse_args()
 
@@ -131,4 +136,4 @@ if __name__ == "__main__":
 
     conf = parse(opts.SRCFILE)
     ports = scan(opts.PORT_START, opts.PORT_END)
-    generate(conf, opts.DESTDIR, opts.ENV, ports)
+    generate(conf, opts.DESTDIR, opts.ENV, ports, suffix=opts.SUFFIX)
