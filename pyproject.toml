@@ -9,8 +9,11 @@ license = "MIT"
 python = "^3.8"
 Jinja2 = "^2.8.0"
 PyYAML = "^5.4.1"
+invoke = "^1.6.0"
 
 [tool.poetry.dev-dependencies]
+tox = "^3.24.4"
+tox-docker = "^3.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
